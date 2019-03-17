@@ -5,8 +5,9 @@
  */
 package fada.views.include;
 
+import fada.models.Animation;
 import fada.controllers.Controller;
-import javax.swing.ImageIcon;
+import java.awt.BorderLayout;
 
 /**
  *
@@ -17,9 +18,12 @@ public class Map extends javax.swing.JInternalFrame {
     /**
      * Creates new form Map
      */
+    
+    private Animation animation;
     public Map() {
         initComponents();
         setFrameIcon(Controller.map_icon);
+        container.setLayout(new BorderLayout());
     }
 
     /**
@@ -43,6 +47,7 @@ public class Map extends javax.swing.JInternalFrame {
 
         container.setBackground(new java.awt.Color(255, 255, 255));
         container.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 0, 51), 3, true));
+        container.setToolTipText("Mapa");
 
         javax.swing.GroupLayout containerLayout = new javax.swing.GroupLayout(container);
         container.setLayout(containerLayout);
@@ -95,7 +100,10 @@ public class Map extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_calcularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_calcularActionPerformed
-
+        animation = new Animation();
+        container.removeAll();
+        container.add(animation, BorderLayout.CENTER);
+        container.updateUI();
     }//GEN-LAST:event_btn_calcularActionPerformed
 
 

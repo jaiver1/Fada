@@ -66,6 +66,7 @@
             </LineBorder>
           </Border>
         </Property>
+        <Property name="toolTipText" type="java.lang.String" value="Mapa"/>
       </Properties>
 
       <Layout>
