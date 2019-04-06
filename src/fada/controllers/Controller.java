@@ -38,8 +38,8 @@ public final class Controller {
     public static void validarDatos(Object[] lines) throws Exception {
         String[] row;
         // Validar estructura del archivo.
-        if (lines.length != 4) {
-            throw new Exception("El archivo debe tener 4 lineas.");
+        if (lines.length < 4) {
+            throw new Exception("El archivo debe tener por lo menos 4 lineas.");
         }
 
         // Validar estructura de la fila #1.
@@ -72,28 +72,35 @@ public final class Controller {
 
         int x = Integer.parseInt(row[0]);
         int y = Integer.parseInt(row[1]);
-        Point start = new Point(x, y);
-
-        // Validar estructura de la fila #4.
-        row = String.valueOf(lines[3]).split(",");
+        Point office = new Point(x, y);
 
         //Validar si la cantidad de datos en la fila es igual entregas
-        if (row.length != deliveries * 2) {
-            throw new Exception("Información incorrecta en la linea #4: La cantidad de datos debe ser el doble de la cantida de entregas (Cantidad * 2).\n"
-                    + "En este caso hay \"" + (deliveries) + "\" entregas, entonces debe tener \"" + (deliveries * 2) + "\" datos indicando las coordenadas.");
+        if (lines.length - 3 != deliveries) {
+            throw new Exception("Información incorrecta rn la cantidad de datos.\n"
+                    + "Hay \"" + (lines.length - 3) + "\" entregas, y debe tener \"" + (deliveries) + "\" datos indicando las coordenadas.");
         }
-        config = new Config(rows, columns, time, deliveries, limit, start);
-        fillMap(row);
+        config = new Config(rows, columns, time, deliveries, limit, office);
+        fillMap(lines);
+        //calculateDistance();
     }
 
-    public static void fillMap(String[] places) throws Exception {
+    public static void fillMap(Object[] places) throws Exception {
         short x, y, index;
-        for (short i = 0; i < places.length; i += 2) {
-            x = Short.parseShort(places[i]);
-            y = Short.parseShort(places[i + 1]);
-            index = (short) (i / 2);
+        for (short i = 3; i < places.length; i++) {
+            String[] place = String.valueOf(places[i]).split(",");
+            x = Short.parseShort(place[0]);
+            y = Short.parseShort(place[1]);
+            index = (short) (i - 3);
             config.setPoint(x, y, true);
             config.setLocation(index, new Point(x, y));
+        }
+    }
+
+    public static void calculateDistance() throws Exception {
+        for (short i = 0; i < config.getDeliveries(); i++) {
+            for (short j = 0; j < config.getDeliveries(); j++) {
+                config.setDistance(i, j);
+            }
         }
     }
 }

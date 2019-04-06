@@ -48,7 +48,7 @@ public class Main extends javax.swing.JFrame {
     private void Abrir(JInternalFrame ir) throws Exception {
 
         if (Controller.config == null){
-          JOptionPane.showMessageDialog(this, "Seleccione un archivo con extension (.txt) para cargar los datos.", "Alerta", JOptionPane.WARNING_MESSAGE);
+          JOptionPane.showMessageDialog(this, "Seleccione un archivo con extension (.fada) para cargar los datos.", "Alerta", JOptionPane.WARNING_MESSAGE);
         } else {
              if (ir.getParent() == null && !ir.isIcon()) {
                 desktop.add(ir);
@@ -162,7 +162,7 @@ public class Main extends javax.swing.JFrame {
 
     private void import_itemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_import_itemActionPerformed
         try {
-            FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivo de Texto (*.txt)", "txt");
+            FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivo Fada (*.fada)", "fada");
             JFileChooser fc = new JFileChooser();
             fc.setFileFilter(filtro);
             int seleccion = fc.showOpenDialog(this);

@@ -14,30 +14,33 @@ import java.awt.Point;
 public class Config {
 
     private final boolean map[][];
-    private final short distance[][];
+    private final int distance[][];
     private final Point places[];
     private final short rows;
     private final short columns;
     private final short time;
     private final short deliveries;
     private final short limit;
-    private final Point start;
+    private final Point office;
 
-    public Config(short rows, short columns, short time, short deliveries, short limit, Point start) {
+    public Config(short rows, short columns, short time, short deliveries, short limit, Point office) {
         this.rows = rows;
         this.columns = columns;
-        this.map = new boolean[rows][columns];
-        this.distance = new short[rows][columns];  
-        this.start = start;
+        this.map = new boolean[rows][columns]; 
+        this.office = office;
         this.time = time;
         this.deliveries = deliveries;
         this.places = new Point[deliveries];
+        this.distance = new int[deliveries+1][deliveries+1]; 
         this.limit = limit;
     }
 
-    public void setDistance(short x, short y, short value) {
-        distance[(x-1)][(y-1)] = value;
+    public void setDistance(short p1, short p2) {
+        distance[p1][p2] = Math.abs(places[p1].x - places[p2].x) + Math.abs(places[p1].y - places[p2].y);
+        System.out.println(p1+"["+places[p1].x+","+places[p1].y+"] ,"+p2+"["+places[p2].x+","+places[p2].y+"]="+distance[p1][p2]);
+    
     }
+
     
     public void setPoint(short x, short y, boolean value) {
         map[(x-1)][(y-1)] = value;
@@ -55,7 +58,7 @@ public class Config {
         return map;
     }
 
-    public short[][] getDistance() {
+    public int[][] getDistance() {
         return distance;
     }
 
@@ -79,8 +82,8 @@ public class Config {
         return limit;
     }
 
-    public Point getStart() {
-        return start;
+    public Point getOffice() {
+        return office;
     }
     
 }

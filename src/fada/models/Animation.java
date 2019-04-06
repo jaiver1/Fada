@@ -26,7 +26,8 @@ import javax.swing.JPanel;
 public class Animation extends JPanel implements MouseWheelListener {
 
     private final boolean map[][];
-    private final Point start;
+    private final Point places[];
+    private final Point office;
     private double zoom = 1;
     private int gx;
     private int gy;
@@ -37,8 +38,9 @@ public class Animation extends JPanel implements MouseWheelListener {
         zoom = 0.5;
         gx = 0;
         gy = 0;
-        map = Controller.config.getMap();      
-        start = Controller.config.getStart();
+        map = Controller.config.getMap();    
+        places = Controller.config.getPlaces();
+        office = Controller.config.getOffice();
 
         addMouseWheelListener((MouseWheelListener) this);
         addMouseMotionListener(new Adaptador_Mouse());
@@ -83,8 +85,12 @@ public class Animation extends JPanel implements MouseWheelListener {
             }
         }
         
+         for (int i = 0; i < places.length; i++) {
+             g.drawString(String.valueOf(i+1),inix + gx + places[i].y * 60 + 2, gy + places[i].x * 60 + 2);             
+         }
+        
         g.setColor(Color.BLUE);
-                    g.fillRect(inix + gx + (start.y-1) * 60 + 21, gy + (start.x-1) * 60 + 21, 38, 38);
+                    g.fillRect(inix + gx + (office.y-1) * 60 + 21, gy + (office.x-1) * 60 + 21, 38, 38);
                     g.setColor(Color.BLACK);
     }
 
