@@ -17,6 +17,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.util.HashMap;
 import javax.swing.JPanel;
 
 /**
@@ -26,19 +27,23 @@ import javax.swing.JPanel;
 public class Animation extends JPanel implements MouseWheelListener {
 
     private final boolean map[][];
-    private final Point places[];
+    private final HashMap<String, Place> places;
     private final Point office;
     private double zoom = 1;
     private int gx;
     private int gy;
-    
+    private final short space = 120;
+    private final short border = 80;
+    private final short fill = 78;
+    String label;
+
     public Animation() {
         setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
         setOpaque(false);
         zoom = 0.5;
         gx = 0;
         gy = 0;
-        map = Controller.config.getMap();    
+        map = Controller.config.getMap();
         places = Controller.config.getPlaces();
         office = Controller.config.getOffice();
 
@@ -68,30 +73,41 @@ public class Animation extends JPanel implements MouseWheelListener {
         g2.scale(zoom, zoom);
         g2.translate(-100, -100);
         int inix = 100;
-        int finx = 0;
 
-        g.setFont(new Font("Trebuchet MS", 3, 32));
+        g.setFont(new Font("Trebuchet MS", 3, 9));
 
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
-                g.drawRect(inix + gx + j * 60 + 20, gy + i * 60 + 20, 40, 40);
-            
-                if(map[i][j]){             
-                    g.setColor(Color.ORANGE);
-                    g.fillRect(inix + gx + j * 60 + 21, gy + i * 60 + 21, 38, 38);
-                    g.setColor(Color.BLACK);
-                    }
+                g.drawRect(inix + gx + j * space + 20, gy + i * space + 20, border, border);
+
+                if (map[i][j]) {
+                    g.setColor(Color.decode("#C2185B"));
+                    g.fillRect(inix + gx + j * space + 21, gy + i * space + 21, fill, fill);
+                    g.setColor(Color.decode("#000000"));
+                }
 
             }
         }
         
-         for (int i = 0; i < places.length; i++) {
-             g.drawString(String.valueOf(i+1),inix + gx + places[i].y * 60 + 2, gy + places[i].x * 60 + 2);             
-         }
-        
-        g.setColor(Color.BLUE);
-                    g.fillRect(inix + gx + (office.y-1) * 60 + 21, gy + (office.x-1) * 60 + 21, 38, 38);
-                    g.setColor(Color.BLACK);
+      g.setColor(Color.decode("#FFFFFF"));
+        places.values().forEach((Place place) -> {
+            label = "[";
+            place.getDeliveries().forEach((Short delivery) -> {
+                label += delivery+",";
+            });
+            label = label.substring(0, label.length()- 1);
+            label += "]";
+            g.drawString(label, inix + gx + place.getLocation().y * space + 23,
+                    gy + place.getLocation().x * space + 62);
+        });
+
+        g.setColor(Color.decode("#3F51B5"));
+        g.fillRect(inix + gx + (office.y) * space + 21, gy + (office.x) * space + 21, fill, fill);
+        g.setColor(Color.decode("#FFFFFF"));
+        g.setFont(new Font("Trebuchet MS", 3, 18));
+        g.drawString("Oficina", inix + gx + office.y * space + 28,
+                    gy + office.x * space + 65);
+        g.setColor(Color.decode("#000000"));
     }
 
     @Override
@@ -120,7 +136,7 @@ public class Animation extends JPanel implements MouseWheelListener {
         int previousY;
 
         @Override
-        public void mousePressed(MouseEvent e) {    
+        public void mousePressed(MouseEvent e) {
             previousX = e.getX();
             previousY = e.getY();
             gx = previousX;
@@ -130,19 +146,19 @@ public class Animation extends JPanel implements MouseWheelListener {
 
         @Override
         public void mouseDragged(MouseEvent e) {
-           
+
             int y = e.getY();
             int x = e.getX();
             if (zoom != 0) {
                 if (x < previousX) {
-                    gx -= (5 / zoom);
+                    gx -= (10 / zoom);
                 } else if (x > previousX) {
-                    gx += (5 / zoom);
+                    gx += (10 / zoom);
                 }
                 if (y < previousY) {
-                    gy -= (5 / zoom);
+                    gy -= (10 / zoom);
                 } else if (y > previousY) {
-                    gy += (5 / zoom);
+                    gy += (10 / zoom);
                 }
             }
             previousX = x;

@@ -90,9 +90,9 @@ public final class Controller {
             String[] place = String.valueOf(places[i]).split(",");
             x = Short.parseShort(place[0]);
             y = Short.parseShort(place[1]);
-            index = (short) (i - 3);
+            index = (short) (i - 2);
             config.setPoint(x, y, true);
-            config.setLocation(index, new Point(x, y));
+            config.setLocation(index, x, y);
         }
     }
 

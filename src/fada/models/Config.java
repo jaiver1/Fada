@@ -6,6 +6,8 @@
 package fada.models;
 
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  *
@@ -15,7 +17,7 @@ public class Config {
 
     private final boolean map[][];
     private final int distance[][];
-    private final Point places[];
+    private final HashMap<String,Place> places;
     private final short rows;
     private final short columns;
     private final short time;
@@ -30,30 +32,39 @@ public class Config {
         this.office = office;
         this.time = time;
         this.deliveries = deliveries;
-        this.places = new Point[deliveries];
+        this.places = new HashMap<>();
         this.distance = new int[deliveries+1][deliveries+1]; 
         this.limit = limit;
     }
 
     public void setDistance(short p1, short p2) {
-        distance[p1][p2] = Math.abs(places[p1].x - places[p2].x) + Math.abs(places[p1].y - places[p2].y);
-        System.out.println(p1+"["+places[p1].x+","+places[p1].y+"] ,"+p2+"["+places[p2].x+","+places[p2].y+"]="+distance[p1][p2]);
+       // distance[p1][p2] = Math.abs(places[p1].x - places[p2].x) + Math.abs(places[p1].y - places[p2].y);
+       // System.out.println(p1+"["+places[p1].x+","+places[p1].y+"] ,"+p2+"["+places[p2].x+","+places[p2].y+"]="+distance[p1][p2]);
     
     }
 
     
     public void setPoint(short x, short y, boolean value) {
-        map[(x-1)][(y-1)] = value;
+        map[x][y] = value;
     }
     
-    public void setLocation(short index, Point location) {
-        places[index] = location;
-    }
-    
-    public Point[] getPlaces() {
-        return places;
+    public void setLocation(short index, short x, short y) {
+        String key = x+","+y;
+        //si ya fue registrado ese punto se añade a la lista
+        if(places.containsKey(key)){
+            places.get(key).add(index);
+        }else{
+            //sino se crea un nuevo lugar y se añade al hashmap
+            Point point = new Point(x, y);
+            Place place = new Place(point,index);
+            places.put(key,place);
+        } 
     }
 
+    public HashMap<String, Place> getPlaces() {
+        return places;
+    }
+    
     public boolean[][] getMap() {
         return map;
     }
