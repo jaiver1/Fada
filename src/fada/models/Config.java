@@ -6,7 +6,6 @@
 package fada.models;
 
 import java.awt.Point;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -18,6 +17,7 @@ public class Config {
     private final boolean map[][];
     private final int distance[][];
     private final HashMap<String,Place> places;
+    private final Point[] document;
     private final short rows;
     private final short columns;
     private final short time;
@@ -33,6 +33,8 @@ public class Config {
         this.time = time;
         this.deliveries = deliveries;
         this.places = new HashMap<>();
+        this.document = new Point[deliveries+1];
+        this.document[0] = this.office;
         this.distance = new int[deliveries+1][deliveries+1]; 
         this.limit = limit;
     }
@@ -40,7 +42,6 @@ public class Config {
     public void setDistance(short p1, short p2) {
        // distance[p1][p2] = Math.abs(places[p1].x - places[p2].x) + Math.abs(places[p1].y - places[p2].y);
        // System.out.println(p1+"["+places[p1].x+","+places[p1].y+"] ,"+p2+"["+places[p2].x+","+places[p2].y+"]="+distance[p1][p2]);
-    
     }
 
     
@@ -49,6 +50,7 @@ public class Config {
     }
     
     public void setLocation(short index, short x, short y) {
+        this.document[index] = new Point(x, y);
         String key = x+","+y;
         //si ya fue registrado ese punto se añade a la lista
         if(places.containsKey(key)){
@@ -61,6 +63,10 @@ public class Config {
         } 
     }
 
+    public Point[] getDocument() {
+        return document;
+    }
+    
     public HashMap<String, Place> getPlaces() {
         return places;
     }

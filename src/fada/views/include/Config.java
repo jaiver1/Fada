@@ -93,11 +93,10 @@ public class Config extends javax.swing.JInternalFrame {
 
         @Override
         public int getRowCount() {
-            if (Controller.config.getPlaces() == null) {
+            if (Controller.config.getDocument() == null) {
                 return 0;
             }
-            return Controller.config.getPlaces().length;
-
+            return Controller.config.getDocument().length;
         }
 
         @Override
@@ -127,15 +126,15 @@ public class Config extends javax.swing.JInternalFrame {
 
         @Override
         public boolean isCellEditable(int i, int j) {
-            return (j > 0);
+            return false;
         }
 
         @Override
         public Object getValueAt(int i, int j) {
-            Point point = Controller.config.getPlaces()[i];
+            Point point = Controller.config.getDocument()[i];
             switch (j) {
                 case 0:
-                    return i+1;
+                    return i;
                 case 1:
                     return point.x;
                 case 2:
