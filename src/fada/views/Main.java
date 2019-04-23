@@ -47,10 +47,12 @@ public class Main extends javax.swing.JFrame {
 
     private void Abrir(JInternalFrame ir) throws Exception {
 
-        if (Controller.config == null){
-          JOptionPane.showMessageDialog(this, "Seleccione un archivo con extension (.fada) para cargar los datos.", "Alerta", JOptionPane.WARNING_MESSAGE);
+        if (Controller.config == null) {
+            JOptionPane.showMessageDialog(this, "Seleccione un archivo con"
+                    + " extension (.fada) para cargar los datos.", "Alerta",
+                    JOptionPane.WARNING_MESSAGE);
         } else {
-             if (ir.getParent() == null && !ir.isIcon()) {
+            if (ir.getParent() == null && !ir.isIcon()) {
                 desktop.add(ir);
                 ir.setVisible(true);
                 ir.setMaximum(true);
@@ -148,7 +150,8 @@ public class Main extends javax.swing.JFrame {
         try {
             Abrir(map);
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_map_itemActionPerformed
 
@@ -156,23 +159,28 @@ public class Main extends javax.swing.JFrame {
         try {
             Abrir(config);
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_config_itemActionPerformed
 
     private void import_itemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_import_itemActionPerformed
         try {
-            FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivo Fada (*.fada)", "fada");
+            FileNameExtensionFilter filtro = new FileNameExtensionFilter(
+                    "Archivo Fada (*.fada)", "fada");
             JFileChooser fc = new JFileChooser();
             fc.setFileFilter(filtro);
             int seleccion = fc.showOpenDialog(this);
             if (seleccion == JFileChooser.APPROVE_OPTION) {
                 Controller.extraerDatos(fc.getSelectedFile());
-                JOptionPane.showMessageDialog(this, "Los datos han sido importados", "Exito", -1, Controller.check_icon);
+                JOptionPane.showMessageDialog(this,
+                        "Los datos han sido importados", "Exito",
+                        JOptionPane.PLAIN_MESSAGE, Controller.check_icon);
             }
         } catch (Exception error) {
             Controller.config = null;
-            JOptionPane.showMessageDialog(this, error.getMessage(), "Error", 0);
+            JOptionPane.showMessageDialog(this, error.getMessage(), "Error",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_import_itemActionPerformed
 
@@ -217,14 +225,16 @@ public class Main extends javax.swing.JFrame {
 
         public Escritorio(JFrame container) {
             this.container = container;
-            icon = new ImageIcon(getClass().getResource("resources/Background.jpg"));
+            icon = new ImageIcon(getClass().
+                    getResource("resources/Background.jpg"));
             image = icon.getImage();
         }
 
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
-            g.drawImage(image, 0, 0, container.getWidth(), container.getHeight(), this);
+            g.drawImage(image, 0, 0, container.getWidth(),
+                    container.getHeight(), this);
         }
     }
 

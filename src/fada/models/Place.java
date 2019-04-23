@@ -5,22 +5,40 @@
  */
 package fada.models;
 
+import java.awt.Color;
 import java.awt.Point;
 import java.util.ArrayList;
+
 /**
  *
  * @author PC
  */
 public class Place {
+
     private Point location;
     private ArrayList<Short> deliveries;
+    private Color color;
+    private final short index;
 
-    public Place(Point location, short index) {
+    public Place(short index, Point location, short index_delivery) {
         this.location = location;
-        deliveries = new ArrayList<>();
-        deliveries.add(index);
+        this.deliveries = new ArrayList<>();
+        this.deliveries.add(index_delivery);
+        this.index = index;
+        this.color = Color.decode("#C2185B");
     }
-    
+
+    public Place(short index, Point location) {
+        this.location = location;
+        this.deliveries = new ArrayList<>();
+        this.index = index;
+        this.color = Color.decode("#C2185B");
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
     public void add(short index) {
         deliveries.add(index);
     }
@@ -40,7 +58,13 @@ public class Place {
     public void setDeliveries(ArrayList<Short> deliveries) {
         this.deliveries = deliveries;
     }
-    
-    
-    
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
 }

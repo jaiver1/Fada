@@ -6,6 +6,7 @@
 package fada.models;
 
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -14,65 +15,69 @@ import java.util.HashMap;
  */
 public class Config {
 
-    private final boolean map[][];
-    private final int distance[][];
-    private final HashMap<String,Place> places;
+    private final HashMap<String, Place> places;
+    private final ArrayList<Place> list;
     private final Point[] document;
     private final short rows;
     private final short columns;
     private final short time;
     private final short deliveries;
     private final short limit;
-    private final Point office;
+    private final Place office;
+    private Route route;
+    private int distance[][];
 
-    public Config(short rows, short columns, short time, short deliveries, short limit, Point office) {
+    public Config(short rows, short columns, short time, short deliveries,
+            short limit, Place office) {
         this.rows = rows;
         this.columns = columns;
-        this.map = new boolean[rows][columns]; 
         this.office = office;
         this.time = time;
         this.deliveries = deliveries;
+        this.list = new ArrayList<>();
         this.places = new HashMap<>();
-        this.document = new Point[deliveries+1];
-        this.document[0] = this.office;
-        this.distance = new int[deliveries+1][deliveries+1]; 
+        this.document = new Point[deliveries + 1];
+        this.document[0] = this.office.getLocation();
         this.limit = limit;
+        this.route = new Route();
     }
 
-    public void setDistance(short p1, short p2) {
-       // distance[p1][p2] = Math.abs(places[p1].x - places[p2].x) + Math.abs(places[p1].y - places[p2].y);
-       // System.out.println(p1+"["+places[p1].x+","+places[p1].y+"] ,"+p2+"["+places[p2].x+","+places[p2].y+"]="+distance[p1][p2]);
+    public void setDistance(int[][] distance) {
+        this.distance = distance;
     }
 
-    
-    public void setPoint(short x, short y, boolean value) {
-        map[x][y] = value;
+    public void setDistance(Place p1, Place p2) {
+        distance[p1.getIndex()][p2.getIndex()] = Math.abs(p1.getLocation().x
+                - p2.getLocation().x) + Math.abs(p1.getLocation().y
+                - p2.getLocation().y);
+        //System.out.println("S" + p1.getIndex() + ",S" + p2.getIndex() + " = "
+        // + distance[p1.getIndex()][p2.getIndex()]);
     }
-    
+
+    public void initDistance(int size) {
+        this.distance = new int[size][size];
+    }
+
     public void setLocation(short index, short x, short y) {
-        this.document[index] = new Point(x, y);
-        String key = x+","+y;
-        //si ya fue registrado ese punto se añade a la lista
-        if(places.containsKey(key)){
-            places.get(key).add(index);
-        }else{
-            //sino se crea un nuevo lugar y se añade al hashmap
-            Point point = new Point(x, y);
-            Place place = new Place(point,index);
-            places.put(key,place);
-        } 
+        if (office.getLocation().x == x && office.getLocation().y == y) {
+            office.getDeliveries().add(index);
+        } else {
+            this.document[index] = new Point(x, y);
+            String key = x + "," + y;
+            //si ya fue registrado ese punto se añade a la lista
+            if (places.containsKey(key)) {
+                places.get(key).add(index);
+            } else {
+                //sino se crea un nuevo lugar y se añade al hashmap
+                Point point = new Point(x, y);
+                Place place = new Place((short) (places.size() + 1), point, index);
+                places.put(key, place);
+            }
+        }
     }
 
     public Point[] getDocument() {
         return document;
-    }
-    
-    public HashMap<String, Place> getPlaces() {
-        return places;
-    }
-    
-    public boolean[][] getMap() {
-        return map;
     }
 
     public int[][] getDistance() {
@@ -99,8 +104,23 @@ public class Config {
         return limit;
     }
 
-    public Point getOffice() {
+    public Place getOffice() {
         return office;
     }
-    
+
+    public Route getRoute() {
+        return route;
+    }
+
+    public void setRoute(Route route) {
+        this.route = route;
+    }
+
+    public HashMap<String, Place> getPlaces() {
+        return places;
+    }
+
+    public ArrayList<Place> getList() {
+        return list;
+    }
 }

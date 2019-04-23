@@ -27,7 +27,8 @@ public class FADA {
             ir.setLocationRelativeTo(null);
             ir.setVisible(true);
         } catch (Exception error) {
-            JOptionPane.showMessageDialog(null, error.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, error.getMessage(), "Error",
+                    JOptionPane.ERROR_MESSAGE);
             System.exit(0);
         }
     }
